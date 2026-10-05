@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package trustguard.inference;
+
+enum ManipulationType {
+  MANIPULATION_TYPE_UNKNOWN = 0;
+  MANIPULATION_TYPE_FACE_SWAP = 1;
+  MANIPULATION_TYPE_FACE_REENACTMENT = 2;
+  MANIPULATION_TYPE_FULL_SYNTHESIS = 3;
+  MANIPULATION_TYPE_AUDIO_SYNC_MISMATCH = 4;
+  MANIPULATION_TYPE_NONE = 5;
+}
+
+message FrameChunk {
+  int32 frame_index = 1;
+  bytes image_data = 2;       // JPEG/PNG compressed frame bytes
+  int64 timestamp_ms = 3;
+}
+
+message FrameAnalysisResult {
+  int32 frame_index = 1;
+  float synthetic_probability = 2;  // 0.0 to 1.0
+  ManipulationType manipulation_type = 3;
+  bytes heatmap_overlay_data = 4;   // Optional Grad-CAM overlay
+}
+
+service DeepfakeInferenceService {
+  // Bidirectional streaming endpoint accepting video frames and returning per-frame synthetic probabilities
+  rpc StreamAnalyzeFrames(stream FrameChunk) returns (stream FrameAnalysisResult);
+}

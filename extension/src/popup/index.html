@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustGuard Security Extension</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-shield">🛡️</div>
+        <div>
+          <h1 class="brand-title">TRUSTGUARD</h1>
+          <span class="brand-subtitle">SIH 2026 · Unified Threat Defense</span>
+        </div>
+      </div>
+      <div id="connectionStatus" class="badge-status online">Backend Ready</div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" id="tabVishingBtn">Vishing Scan</button>
+      <button class="tab-btn" id="tabProvenanceBtn">Provenance Check</button>
+      <button class="tab-btn" id="tabDeepfakeBtn">Deepfake Scan</button>
+    </nav>
+
+    <!-- Tab 1: Vishing Detection -->
+    <main id="vishingSection" class="tab-content active">
+      <div class="input-card">
+        <label for="vishingInput" class="input-label">Suspicious Message or Call Transcript</label>
+        <textarea id="vishingInput" rows="4" placeholder="Paste conversation, email, or transcript here (e.g. 'Urgent notice! Confirm your OTP immediately to avoid account suspension...')" autofocus></textarea>
+        <div class="input-footer">
+          <span class="pii-badge">🔒 Automatic PII Masking Active</span>
+          <button id="scanVishingBtn" class="btn btn-primary">Scan Message</button>
+        </div>
+      </div>
+
+      <!-- Result Card -->
+      <div id="vishingResultCard" class="result-card hidden">
+        <div class="result-header">
+          <span id="riskLabel" class="risk-pill low">LOW RISK</span>
+          <span id="riskScoreDisplay" class="score-display">0 / 100</span>
+        </div>
+
+        <div class="recommendation-box" id="recommendationText">
+          Evaluating content...
+        </div>
+
+        <div id="categoriesContainer" class="tags-container"></div>
+
+        <div class="flagged-box" id="flaggedContainer">
+          <div class="flagged-title">Flagged Indicators:</div>
+          <ul id="flaggedList" class="flagged-list"></ul>
+        </div>
+      </div>
+    </main>
+
+    <!-- Tab 2: Provenance Verification -->
+    <main id="provenanceSection" class="tab-content">
+      <div class="input-card">
+        <label for="hashInput" class="input-label">Content SHA-256 Hash or File</label>
+        <input type="text" id="hashInput" placeholder="Enter 64-character SHA-256 media hash">
+        <div class="drop-zone" id="fileDropZone">
+          <p>📁 Or drop an image/video to compute hash</p>
+          <input type="file" id="provenanceFileInput" class="hidden-file-input">
+        </div>
+        <div class="input-footer">
+          <span class="chain-badge">⛓️ Polygon Amoy Verified</span>
+          <button id="verifyHashBtn" class="btn btn-primary">Verify On-Chain</button>
+        </div>
+      </div>
+
+      <div id="provenanceResultCard" class="result-card hidden">
+        <div class="result-header">
+          <span id="provStatusPill" class="risk-pill safe">EXACT_MATCH</span>
+        </div>
+        <div class="prov-meta" id="provMetaDetails"></div>
+      </div>
+    </main>
+
+    <!-- Tab 3: Deepfake CV Analysis -->
+    <main id="deepfakeSection" class="tab-content">
+      <div class="input-card">
+        <label class="input-label">Media Authenticity & Deepfake Scanner</label>
+        <div class="drop-zone" id="deepfakeDropZone">
+          <p>🎥 Drop video or image for CNN/ViT frame inspection</p>
+          <input type="file" id="deepfakeFileInput" accept="image/*,video/*" class="hidden-file-input">
+        </div>
+        <button id="submitDeepfakeBtn" class="btn btn-primary full-width" style="margin-top: 10px;">Analyze Media</button>
+      </div>
+
+      <div id="deepfakeStatusCard" class="result-card hidden">
+        <div class="status-indicator">
+          <div class="spinner"></div>
+          <span id="deepfakeStatusText">Extracting frames (ffmpeg)...</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>Unified Risk Engine v0.1.0</span>
+      <a href="#" id="optionsLink" class="footer-link">Settings</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

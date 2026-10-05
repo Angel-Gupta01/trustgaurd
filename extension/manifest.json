@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "TrustGuard - Vishing & Deepfake Defense",
+  "version": "1.0.0",
+  "description": "Unified social-engineering (vishing) detection and computer-vision deepfake / content-provenance defense.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "https://api.trustguard.security/*"
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_title": "TrustGuard Security Scanner"
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/content-script.ts"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "src/options/index.html"
+}
